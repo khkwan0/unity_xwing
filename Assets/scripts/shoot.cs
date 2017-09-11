@@ -29,7 +29,7 @@ public class shoot : MonoBehaviour {
 	}
      
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (Input.GetButton("Fire1"))
         {
             if (_shootTimeout <= 0.0f)
@@ -72,7 +72,6 @@ public class shoot : MonoBehaviour {
             {
                 hotCannonIndex = 0;
             }
-
             Destroy(_laser, _laserLifetime);
             yield return null;
         }

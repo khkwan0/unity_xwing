@@ -16,7 +16,7 @@ public class Thrusters : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         rb.AddForce(transform.forward * throttle * _maxSpeed);
 		
 	}

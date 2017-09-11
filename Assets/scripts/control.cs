@@ -67,7 +67,7 @@ public class control : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate() {
         if (Input.GetKeyDown(k_cockpitCamera))
         {
             chaseCamera.enabled = false;

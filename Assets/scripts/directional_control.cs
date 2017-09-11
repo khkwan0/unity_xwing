@@ -24,9 +24,8 @@ public class directional_control : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         _direction = _pitch + _yaw + _roll;
-
         rb.AddRelativeTorque(_direction * _turnSpeed * maxTurnSpeed);
     }
 

@@ -16,7 +16,11 @@ public class HUDControl : MonoBehaviour {
     private GameObject _targetted;
     [SerializeField]
     private GameObject _oldTarget;
+    [SerializeField]
+    private float _dist;
 
+    [SerializeField]
+    private float _scaleFactor;
     private BottomHUDController bottomHud;
 
 	// Use this for initialization
@@ -96,7 +100,14 @@ public class HUDControl : MonoBehaviour {
         if (_targetted)
         {
             targetCamera.enabled = true;
+
             targetCamera.transform.rotation = Quaternion.LookRotation(_targetted.transform.position - transform.parent.position);
+            //Debug.Log(_targetted.transform.position + " --- " + transform.parent.position + " = " + Vector3.Distance(_targetted.transform.position, transform.parent.position));
+            _dist = Vector3.Distance(_targetted.transform.position, transform.parent.position);
+            _scaleFactor = 1.0f;
+            targetCamera.transform.position = transform.parent.position + (targetCamera.transform.forward * _dist) - (targetCamera.transform.forward * 10);
+
+
 
             bottomHud.setTarget(_targetted);
         }
@@ -124,5 +135,10 @@ public class HUDControl : MonoBehaviour {
     public GameObject getTargetted()
     {
         return _targetted;    
+    }
+
+    public GameObject getTarget()
+    {
+        return _targetted;
     }
 }

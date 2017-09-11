@@ -102,9 +102,11 @@
     <Compile Include="Assets\scripts\Radar.cs" />
     <Compile Include="Assets\scripts\ShipMeta.cs" />
     <Compile Include="Assets\scripts\shoot.cs" />
+    <Compile Include="Assets\scripts\TargetLeadGeneration.cs" />
     <Compile Include="Assets\scripts\Thrusters.cs" />
     <Compile Include="Assets\scripts\tiefighter_ai.cs" />
     <Compile Include="Assets\scripts\WeaponsSystem.cs" />
+    <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\EffectExamples\Shared\Shaders\SurfaceShader_VC.shader" />

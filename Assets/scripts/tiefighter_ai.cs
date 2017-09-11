@@ -52,7 +52,7 @@ public class tiefighter_ai : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         determineWhatToDo();
     }
 
@@ -81,14 +81,16 @@ public class tiefighter_ai : MonoBehaviour {
         {
            
             thrusters.setOneThirdThrottle();
+            /*
             dirControl.yawRight();
             dirControl.pitchUp();
+            */
        
             this.setTarget(GameObject.Find("player_xwing"));
 
             if (timeout <= 0.0f)
             {
-                _state = __state.attack;
+                //_state = __state.attack;
             }
             else
             {
