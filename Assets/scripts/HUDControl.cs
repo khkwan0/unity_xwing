@@ -104,11 +104,8 @@ public class HUDControl : MonoBehaviour {
             targetCamera.transform.rotation = Quaternion.LookRotation(_targetted.transform.position - transform.parent.position);
             //Debug.Log(_targetted.transform.position + " --- " + transform.parent.position + " = " + Vector3.Distance(_targetted.transform.position, transform.parent.position));
             _dist = Vector3.Distance(_targetted.transform.position, transform.parent.position);
-            _scaleFactor = 1.0f;
-            targetCamera.transform.position = transform.parent.position + (targetCamera.transform.forward * _dist) - (targetCamera.transform.forward * 10);
-
-
-
+            _scaleFactor = 10.0f;
+            targetCamera.transform.position = transform.parent.position + (targetCamera.transform.forward * _dist) - (targetCamera.transform.forward * _scaleFactor);
             bottomHud.setTarget(_targetted);
         }
 	}
