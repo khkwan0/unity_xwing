@@ -154,6 +154,7 @@ public class Radar : MonoBehaviour {
                 rearReticle.transform.localPosition = reticlePosition;
             }
             
+            // the target is just outside of the viewport for both front _and_ rear projection
             if (screenLoc.x > Screen.width || screenLoc.x < 0.0f || screenLoc.y > Screen.height || screenLoc.y < 0.0f) { 
                 reticle.GetComponent<Image>().enabled = false;
                 rearReticle.GetComponent<Image>().enabled = true;

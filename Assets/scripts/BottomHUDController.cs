@@ -58,7 +58,7 @@ public class BottomHUDController : MonoBehaviour {
                     cargo.text = cargoText;
                 }
                 distance.color = Color.green;
-                distance.text = (Vector3.Distance(target.transform.position, transform.root.transform.position) / 3.0f/ 100.0f).ToString("F2");
+                distance.text = "DST: " + (Vector3.Distance(target.transform.position, transform.root.transform.position) / 3.0f/ 100.0f).ToString("F2");
             }
         } else
         {
