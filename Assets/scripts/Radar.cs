@@ -135,12 +135,15 @@ public class Radar : MonoBehaviour {
                 rearReticle.GetComponent<Image>().enabled = false;
 
                 // adjust for anchors
-                reticle.transform.localPosition = screenLoc - new Vector3(Screen.width / 2, Screen.height / 2, 0.0f);
+                reticlePosition = screenLoc - new Vector3(Screen.width / 2, Screen.height / 2, 0.0f);
+                reticlePosition.z = 0.0f;
+                reticle.transform.localPosition = reticlePosition;
             } else
             {
                 reticle.GetComponent<Image>().enabled = false;
                 rearReticle.GetComponent<Image>().enabled = true;
                 reticlePosition = screenLoc - new Vector3(Screen.width / 2, Screen.height / 2, 0.0f);
+                reticlePosition.z = 0.0f;
                 if (reticlePosition.y < 0.0f)
                 {
                     rearReticle.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);

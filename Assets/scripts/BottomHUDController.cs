@@ -58,6 +58,8 @@ public class BottomHUDController : MonoBehaviour {
                     cargo.text = cargoText;
                 }
                 distance.color = Color.green;
+
+                // 3.0f is a scale factor from unity coordinate system to one that feels like MGLT
                 distance.text = "DST: " + (Vector3.Distance(target.transform.position, transform.root.transform.position) / 3.0f/ 100.0f).ToString("F2");
             }
         } else
