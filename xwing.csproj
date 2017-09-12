@@ -99,6 +99,7 @@
     <Compile Include="Assets\scripts\health.cs" />
     <Compile Include="Assets\scripts\hit_behavior.cs" />
     <Compile Include="Assets\scripts\HUDControl.cs" />
+    <Compile Include="Assets\scripts\HUDFeedback.cs" />
     <Compile Include="Assets\scripts\Radar.cs" />
     <Compile Include="Assets\scripts\ShipMeta.cs" />
     <Compile Include="Assets\scripts\shoot.cs" />

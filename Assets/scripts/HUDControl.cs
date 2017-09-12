@@ -22,6 +22,7 @@ public class HUDControl : MonoBehaviour {
     [SerializeField]
     private float _scaleFactor;
     private BottomHUDController bottomHud;
+    private HUDFeedback hudFeedback;
 
 	// Use this for initialization
 	void Awake () {
@@ -29,6 +30,7 @@ public class HUDControl : MonoBehaviour {
         _eventLog = GameObject.Find("EventText");
         _oldTarget = null;
         bottomHud = transform.Find("bottom_hud").gameObject.GetComponent<BottomHUDController>();
+        hudFeedback = transform.Find("feedback").gameObject.GetComponent<HUDFeedback>();
     }
 	
 	// Update is called once per frame
@@ -137,5 +139,10 @@ public class HUDControl : MonoBehaviour {
     public GameObject getTarget()
     {
         return _targetted;
+    }
+
+    public void hudMessage(string _msg)
+    {
+        hudFeedback.setText(_msg);
     }
 }

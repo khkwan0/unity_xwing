@@ -11,6 +11,11 @@ public class control : MonoBehaviour {
     public KeyCode k_chaseCamera;
     public KeyCode k_freeCamera;
 
+    public KeyCode k_fullThrottle;
+    public KeyCode k_noThrottle;
+    public KeyCode k_oneThirdThrottle;
+    public KeyCode k_twoThirdsThrottle;
+
     public Camera cockpitCamera;
     public Camera chaseCamera;
     public Camera freeCamera;
@@ -18,6 +23,7 @@ public class control : MonoBehaviour {
 
     private GameObject HUD;
     private GameObject _crossHairs;
+    private HUDControl hudControl;
 
     [SerializeField]
     private GameObject __target;
@@ -35,10 +41,11 @@ public class control : MonoBehaviour {
 
     void Start () {
         HUD = GameObject.Find("HUD");
+        hudControl = HUD.GetComponent<HUDControl>();
         thrusters = GetComponent<Thrusters>();
         string minutes = Mathf.Floor(Time.fixedTime / 60).ToString("00");
         string seconds = (Time.fixedTime % 60).ToString("00");
-        HUD.GetComponent<HUDControl>().appendToLog(new Color(0.7f, 0.1f, 0.9f), minutes+":"+seconds + "Mission started\n");
+        hudControl.appendToLog(new Color(0.7f, 0.1f, 0.9f), minutes+":"+seconds + "Mission started\n");
     }
 
     // Update is called once per frame
@@ -49,16 +56,16 @@ public class control : MonoBehaviour {
             chaseCamera.enabled = false;
             freeCamera.enabled = false;
             cockpitCamera.enabled = true;
-            HUD.GetComponent<HUDControl>().setCrossHairPos(new Vector3(0.0f, -3.0f, 0.0f));
-            HUD.GetComponent<HUDControl>().enableCrosshairs(true);
+            hudControl.setCrossHairPos(new Vector3(0.0f, -3.0f, 0.0f));
+            hudControl.enableCrosshairs(true);
         }
         if (Input.GetKeyDown(k_chaseCamera))
         {
             chaseCamera.enabled = true;
             freeCamera.enabled = false;
             cockpitCamera.enabled = false;
-            HUD.GetComponent<HUDControl>().setCrossHairPos(new Vector3(0.0f, -11.0f, 0.0f));
-            HUD.GetComponent<HUDControl>().enableCrosshairs(true);
+            hudControl.setCrossHairPos(new Vector3(0.0f, -11.0f, 0.0f));
+            hudControl.enableCrosshairs(true);
             if (targetCamera != null)
             {
                 targetCamera.enabled = false;
@@ -69,7 +76,7 @@ public class control : MonoBehaviour {
             chaseCamera.enabled = false;
             freeCamera.enabled = true;
             cockpitCamera.enabled = false;
-            HUD.GetComponent<HUDControl>().enableCrosshairs(false);
+            hudControl.enableCrosshairs(false);
             if (targetCamera != null)
             {
                 targetCamera.enabled = false;
@@ -81,8 +88,30 @@ public class control : MonoBehaviour {
             if (__target != null)
             {
                 thrusters.setSpeed(__target.GetComponent<Rigidbody>().velocity.magnitude);
+                hudControl.hudMessage("Matching speed with target");
             }
         }
+        if (Input.GetKeyDown(k_fullThrottle))
+        {
+            thrusters.setFullThrottle();
+            hudControl.hudMessage("Throttle set to FULL");
+        }
+        if (Input.GetKeyDown(k_noThrottle))
+        {
+            thrusters.setNonThrottle();
+            hudControl.hudMessage("Throttle set to NONE");
+        }
+        if (Input.GetKeyDown(k_oneThirdThrottle))
+        {
+            thrusters.setOneThirdThrottle();
+            hudControl.hudMessage("Throttle set to 1/3");
+        }
+        if (Input.GetKeyDown(k_twoThirdsThrottle))
+        {
+            thrusters.setTwoThirdsThrottle();
+            hudControl.hudMessage("Throttle set to 2/3");
+        }
+
     }
 }
 

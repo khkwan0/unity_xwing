@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Thrusters : MonoBehaviour {
 
-    public KeyCode k_fullThrottle;
-    public KeyCode k_noThrottle;
-    public KeyCode k_oneThirdThrottle;
-    public KeyCode k_twoThirdsThrottle;
-
     public AudioSource engineFullThrottleSound;
 
     [SerializeField]
@@ -48,28 +43,6 @@ public class Thrusters : MonoBehaviour {
         return GetComponent<ShipMeta>().absoluteMaxSpeed * _availableThrusters;
     }
 
-    private void Update()
-    {
-        if (transform.gameObject.tag == "Player")
-        {
-            if (Input.GetKeyDown(k_fullThrottle))
-            {
-                this.setFullThrottle();
-            }
-            if (Input.GetKeyDown(k_noThrottle))
-            {
-                this.setNonThrottle();
-            }
-            if (Input.GetKeyDown(k_oneThirdThrottle))
-            {
-                this.setOneThirdThrottle();
-            }
-            if (Input.GetKeyDown(k_twoThirdsThrottle))
-            {
-                this.setTwoThirdsThrottle();
-            }
-        }
-    }
     void FixedUpdate () {
     //    rb.AddForce(transform.forward * throttle * (_maxThrust + 2.0f * throttle));
         speed = rb.velocity.magnitude;
