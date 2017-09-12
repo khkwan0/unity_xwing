@@ -15,10 +15,14 @@ public class directional_control : MonoBehaviour {
     private Vector3 _roll;
     private Vector3 _direction;
 
-    public float maxTurnSpeed;
+    private Vector3 _rollLeft, _rollRight;
+
+    [SerializeField]
+    private float maxTurnSpeed;
 
     void Start () {
         rb = gameObject.GetComponent<Rigidbody>();
+        maxTurnSpeed = gameObject.GetComponent<ShipMeta>().maxTurnSpeed;
         this.setFullTurnSpeed();
         _direction = new Vector3(0.0f, 0.0f);
     }
@@ -29,14 +33,25 @@ public class directional_control : MonoBehaviour {
         rb.AddRelativeTorque(_direction * _turnSpeed * maxTurnSpeed);
     }
 
+    private void Update()
+    {
+        if (gameObject.tag == "Player")
+        {
+            rb.AddRelativeTorque(Input.GetAxis("Vertical") * _turnSpeed, Input.GetAxis("Horizontal") * _turnSpeed, 0.0f);
+            rb.AddRelativeTorque(0.0f, 0.0f, Input.GetAxis("RollLeft") * _turnSpeed);
+            rb.AddRelativeTorque(0.0f, 0.0f, -1.0f * Input.GetAxis("RollRight") * _turnSpeed);
+        }
+
+    }
+
     public void setFullTurnSpeed()
     {
-        _turnSpeed = 1.0f;
+        _turnSpeed = 1.0f * maxTurnSpeed;
     }
 
     public void setOneThirdTurnSpeed()
     {
-        _turnSpeed = 0.33f;
+        _turnSpeed = 0.33f * maxTurnSpeed;
     }
 
     public void setTurnSpeed(float __turnSpeed)
@@ -59,6 +74,32 @@ public class directional_control : MonoBehaviour {
         _pitch = new Vector3(0.0f, 0.0f, 0.0f);
         _roll = new Vector3(0.0f, 0.0f, 0.0f);
     }
+
+    private void addYaw(float _amt)
+    {
+        _yaw = transform.up * _amt;
+    }
+
+    private void addPitch(float _amt)
+    {
+        _pitch = transform.right * _amt;
+    }
+
+    private void addRollLeft(float _amt)
+    {
+        _rollLeft = transform.forward * _amt;
+    }
+
+    private void addRollRight(float _amt)
+    {
+        _rollRight = transform.forward * _amt * -1.0f;
+    }
+
+    private void computeRoll()
+    {
+        _roll = _rollLeft + _rollRight;
+    }
+
     public void yawRight(float _amt = 1.0f)
     {
         _yaw = transform.up * _amt;

@@ -7,6 +7,9 @@ public class ShipMeta : MonoBehaviour {
     public bool friend;
     public bool foe;
 
+    public float absoluteMaxSpeed;
+    public float maxTurnSpeed;
+
     [SerializeField]
     private bool _isTargetted;  
     void Start () {

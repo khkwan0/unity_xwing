@@ -113,6 +113,43 @@ Camera:
   m_PrefabParentObject: {fileID: 20336655661170182, guid: 4a452667f961f374499c22be056fa822,
     type: 2}
   m_PrefabInternal: {fileID: 1159985863}
+--- !u!1 &589088932 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1060864118987596, guid: 741643a47eeb5a542904fc8990f94667,
+    type: 2}
+  m_PrefabInternal: {fileID: 1456337752}
+--- !u!114 &589088946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 589088932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74393e14155a7354b915f41270e36c4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  k_fullThrottle: 8
+  k_noThrottle: 92
+  k_oneThirdThrottle: 91
+  k_twoThirdsThrottle: 93
+  throttle: 0
+  _maxSpeed: 0
+  _maxThrust: 0
+  speed: 0
+--- !u!114 &589088947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 589088932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c330925643680094badd3191cc93e62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _turnSpeed: 0
+  maxTurnSpeed: 0
 --- !u!1 &856383797
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +377,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 135987951284842952, guid: 4a452667f961f374499c22be056fa822,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a452667f961f374499c22be056fa822, type: 2}
   m_IsPrefabParent: 0
@@ -421,12 +463,12 @@ Prefab:
     - target: {fileID: 224334529997218116, guid: 741643a47eeb5a542904fc8990f94667,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -18
       objectReference: {fileID: 0}
     - target: {fileID: 224334529997218116, guid: 741643a47eeb5a542904fc8990f94667,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 224879884947656572, guid: 741643a47eeb5a542904fc8990f94667,
         type: 2}
@@ -436,7 +478,27 @@ Prefab:
     - target: {fileID: 224879884947656572, guid: 741643a47eeb5a542904fc8990f94667,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -224
+      objectReference: {fileID: 0}
+    - target: {fileID: 114739801601853392, guid: 741643a47eeb5a542904fc8990f94667,
+        type: 2}
+      propertyPath: absoluteMaxSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114739801601853392, guid: 741643a47eeb5a542904fc8990f94667,
+        type: 2}
+      propertyPath: maxTurnSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 54956441537354174, guid: 741643a47eeb5a542904fc8990f94667,
+        type: 2}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54956441537354174, guid: 741643a47eeb5a542904fc8990f94667,
+        type: 2}
+      propertyPath: m_Mass
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 741643a47eeb5a542904fc8990f94667, type: 2}

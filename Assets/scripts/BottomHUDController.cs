@@ -14,6 +14,7 @@ public class BottomHUDController : MonoBehaviour {
     private Text distance;
     private Text system;
     private Text cargo;
+    private Text speed;
     private string shieldPercent;
     private string cargoText;
 
@@ -23,6 +24,7 @@ public class BottomHUDController : MonoBehaviour {
         distance = transform.Find("distance").GetComponent<Text>();
         system = transform.Find("system").GetComponent<Text>();
         cargo = transform.Find("cargo").GetComponent<Text>();
+        speed = transform.Find("speed").GetComponent<Text>();
 
         cargoText = "No Cargo";
            
@@ -59,8 +61,12 @@ public class BottomHUDController : MonoBehaviour {
                 }
                 distance.color = Color.green;
 
-                // 3.0f is a scale factor from unity coordinate system to one that feels like MGLT
+                // 3.0f is a scale factor from unity coordinate system to one that feels like MGLT (sublight speeds - Megalight)
                 distance.text = "DST: " + (Vector3.Distance(target.transform.position, transform.root.transform.position) / 3.0f/ 100.0f).ToString("F2");
+
+                speed.color = Color.green;
+                speed.text = "SPD: " + target.GetComponent<Rigidbody>().velocity.magnitude.ToString("F2");
+                
             }
         } else
         {
@@ -69,6 +75,7 @@ public class BottomHUDController : MonoBehaviour {
             distance.text = "";
             cargo.text = "";
             system.text = "";
+            speed.text = "";
         }
 	}
 
