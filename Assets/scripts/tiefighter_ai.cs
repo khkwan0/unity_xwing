@@ -79,7 +79,7 @@ public class tiefighter_ai : MonoBehaviour {
         }
         if (_state == __state.evade)
         {
-           
+
             thrusters.setOneThirdThrottle();
             /*
             dirControl.yawRight();
@@ -90,7 +90,7 @@ public class tiefighter_ai : MonoBehaviour {
 
             if (timeout <= 0.0f)
             {
-                //_state = __state.attack;
+                _state = __state.attack;
             }
             else
             {

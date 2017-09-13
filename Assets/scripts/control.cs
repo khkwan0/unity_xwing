@@ -56,16 +56,20 @@ public class control : MonoBehaviour {
             chaseCamera.enabled = false;
             freeCamera.enabled = false;
             cockpitCamera.enabled = true;
+            /*
             hudControl.setCrossHairPos(new Vector3(0.0f, -3.0f, 0.0f));
             hudControl.enableCrosshairs(true);
+            */
         }
         if (Input.GetKeyDown(k_chaseCamera))
         {
             chaseCamera.enabled = true;
             freeCamera.enabled = false;
             cockpitCamera.enabled = false;
+            /*
             hudControl.setCrossHairPos(new Vector3(0.0f, -11.0f, 0.0f));
             hudControl.enableCrosshairs(true);
+            */
             if (targetCamera != null)
             {
                 targetCamera.enabled = false;
@@ -76,7 +80,7 @@ public class control : MonoBehaviour {
             chaseCamera.enabled = false;
             freeCamera.enabled = true;
             cockpitCamera.enabled = false;
-            hudControl.enableCrosshairs(false);
+            //hudControl.enableCrosshairs(false);
             if (targetCamera != null)
             {
                 targetCamera.enabled = false;
