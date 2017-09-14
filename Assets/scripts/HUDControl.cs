@@ -46,7 +46,12 @@ public class HUDControl : MonoBehaviour {
         _hudEnabled = true;
         _allowToggle = true;
     }
-	
+
+    private void Start()
+    {
+        transform.parent.GetComponent<control>().targetChaseCamera.transform.localPosition = new Vector3(0.0f, 5.0f, -50.0f);
+    }
+
     private void enableNormalCrossHairs()
     {
         crosshairs.enableNormal();
@@ -154,6 +159,10 @@ public class HUDControl : MonoBehaviour {
             _scaleFactor = 10.0f;
             targetCamera.transform.position = transform.parent.position + (targetCamera.transform.forward * _dist) - (targetCamera.transform.forward * _scaleFactor);
             bottomHud.setTarget(_targetted);
+
+            //place the chase camera
+            GameObject.Find("TargetChaseCamera").transform.SetParent(_targetted.transform);
+            _targetted.transform.Find("TargetChaseCamera").transform.localPosition = new Vector3(0.0f, 5.0f, -50.0f);
 
             // determine lead/intercept point
             _int = FindInterceptVector(transform.parent.position, 320.0f, _targetted.transform.position, _targetted.GetComponent<Rigidbody>().velocity);

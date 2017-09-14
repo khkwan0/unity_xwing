@@ -9,7 +9,7 @@ public class control : MonoBehaviour {
 
     public KeyCode k_cockpitCamera;
     public KeyCode k_chaseCamera;
-    public KeyCode k_freeCamera;
+    public KeyCode k_targetChase;
 
     public KeyCode k_fullThrottle;
     public KeyCode k_noThrottle;
@@ -18,7 +18,7 @@ public class control : MonoBehaviour {
 
     public Camera cockpitCamera;
     public Camera chaseCamera;
-    public Camera freeCamera;
+    public Camera targetChaseCamera;
     public Camera targetCamera;
 
     private GameObject HUD;
@@ -33,7 +33,7 @@ public class control : MonoBehaviour {
     void Awake()
     {
         cockpitCamera.enabled = true;
-        freeCamera.enabled = false;
+        targetChaseCamera.enabled = false;
         chaseCamera.enabled = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -54,7 +54,7 @@ public class control : MonoBehaviour {
         if (Input.GetKeyDown(k_cockpitCamera))
         {
             chaseCamera.enabled = false;
-            freeCamera.enabled = false;
+            targetChaseCamera.enabled = false;
             cockpitCamera.enabled = true;
             hudControl.enabledCrosshairs();
             hudControl.enableRadar();
@@ -65,7 +65,7 @@ public class control : MonoBehaviour {
         if (Input.GetKeyDown(k_chaseCamera))
         {
             chaseCamera.enabled = true;
-            freeCamera.enabled = false;
+            targetChaseCamera.enabled = false;
             cockpitCamera.enabled = false;
             hudControl.enabledCrosshairs();
             hudControl.disableRadar();
@@ -73,10 +73,10 @@ public class control : MonoBehaviour {
             hudControl.disableBottomHud();
             hudControl.disableToggle();
         }
-        if (Input.GetKeyDown(k_freeCamera))
+        if (Input.GetKeyDown(k_targetChase))
         {
             chaseCamera.enabled = false;
-            freeCamera.enabled = true;
+            targetChaseCamera.enabled = true;
             cockpitCamera.enabled = false;
             hudControl.disableCrosshairs();
             hudControl.disableEventLog();
