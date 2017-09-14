@@ -258,7 +258,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: 1713876349
+  randomSeed: 1170367932
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4082,6 +4082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   s_target: {fileID: 558262024}
+  _enabled: 0
 --- !u!1 &187516363
 GameObject:
   m_ObjectHideFlags: 0
@@ -4984,7 +4985,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -890182155
+  randomSeed: 1929691992
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -9401,7 +9402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74393e14155a7354b915f41270e36c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  engineFullThrottleSound: {fileID: 0}
+  engineFullThrottleSound: {fileID: 1261359061}
   throttle: 0
   _maxSpeed: 0
   _maxThrust: 0
@@ -10499,6 +10500,7 @@ MonoBehaviour:
   reticlePosition: {x: 0, y: 0, z: 0}
   r_frontWidth: 0
   r_frontHeight: 0
+  _enabled: 0
 --- !u!114 &827580101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10519,7 +10521,6 @@ MonoBehaviour:
   _int: {x: 0, y: 0, z: 0}
   _forward: {x: 0, y: 0, z: 0}
   _dot: 0
-  _intDist: 0
   _scaleFactor: 0
 --- !u!114 &827580102
 MonoBehaviour:
@@ -15497,7 +15498,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 342d7ee550d8d1f4e9064d3c1435936a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.17
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -23156,7 +23157,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6.42, y: 8.15, z: 9.5}
+  m_Size: {x: 6.42, y: 8.15, z: 7.39}
   m_Center: {x: 0, y: 0.41, z: 0}
 --- !u!1 &1324049597
 GameObject:
@@ -23999,7 +24000,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 947148601
+  randomSeed: 1529669874
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -32013,13 +32014,13 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1808232749}
-  m_LocalRotation: {x: 0.000000029802322, y: -0.70710677, z: -0.000000014901161, w: 0.7071068}
-  m_LocalPosition: {x: 50.74, y: 0, z: 50.8}
+  m_LocalRotation: {x: -0.12794538, y: 0.00000017881392, z: -0, w: -0.9917813}
+  m_LocalPosition: {x: -0.0015277865, y: 9.504, z: -21.877565}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1309356654}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 21.11, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 14.702001, y: 0, z: 0}
 --- !u!1 &1871083840
 GameObject:
   m_ObjectHideFlags: 0
