@@ -56,35 +56,33 @@ public class control : MonoBehaviour {
             chaseCamera.enabled = false;
             freeCamera.enabled = false;
             cockpitCamera.enabled = true;
-            /*
-            hudControl.setCrossHairPos(new Vector3(0.0f, -3.0f, 0.0f));
-            hudControl.enableCrosshairs(true);
-            */
+            hudControl.enabledCrosshairs();
+            hudControl.enableRadar();
+            hudControl.enableEventLog();
+            hudControl.enableBottomHud();
+            hudControl.enableToggle();
         }
         if (Input.GetKeyDown(k_chaseCamera))
         {
             chaseCamera.enabled = true;
             freeCamera.enabled = false;
             cockpitCamera.enabled = false;
-            /*
-            hudControl.setCrossHairPos(new Vector3(0.0f, -11.0f, 0.0f));
-            hudControl.enableCrosshairs(true);
-            */
-            if (targetCamera != null)
-            {
-                targetCamera.enabled = false;
-            }
+            hudControl.enabledCrosshairs();
+            hudControl.disableRadar();
+            hudControl.disableEventLog();
+            hudControl.disableBottomHud();
+            hudControl.disableToggle();
         }
         if (Input.GetKeyDown(k_freeCamera))
         {
             chaseCamera.enabled = false;
             freeCamera.enabled = true;
             cockpitCamera.enabled = false;
-            //hudControl.enableCrosshairs(false);
-            if (targetCamera != null)
-            {
-                targetCamera.enabled = false;
-            }
+            hudControl.disableCrosshairs();
+            hudControl.disableEventLog();
+            hudControl.disableRadar();
+            hudControl.disableBottomHud();
+            hudControl.disableToggle();
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
@@ -115,8 +113,5 @@ public class control : MonoBehaviour {
             thrusters.setTwoThirdsThrottle();
             hudControl.hudMessage("Throttle set to 2/3");
         }
-
     }
 }
-
-

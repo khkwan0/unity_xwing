@@ -11,8 +11,6 @@ public class HUDControl : MonoBehaviour {
     public Camera targetCamera;
     public AudioSource targetSound;
 
-    public GameObject tempTarget;
-
     private CrosshairControl crosshairs;
 
     [SerializeField]
@@ -27,14 +25,15 @@ public class HUDControl : MonoBehaviour {
     private Vector3 _forward;
     [SerializeField]
     private float _dot;
-    [SerializeField]
-    private float _intDist;
-
 
     [SerializeField]
     private float _scaleFactor;
     private BottomHUDController bottomHud;
     private HUDFeedback hudFeedback;
+    private bool _bottomHUDEnabled;
+
+    private bool _hudEnabled;
+    private bool _allowToggle;
 
 	// Use this for initialization
 	void Awake () {
@@ -43,6 +42,9 @@ public class HUDControl : MonoBehaviour {
         bottomHud = transform.Find("bottom_hud").gameObject.GetComponent<BottomHUDController>();
         hudFeedback = transform.Find("feedback").gameObject.GetComponent<HUDFeedback>();
         crosshairs = transform.Find("crosshairs").gameObject.GetComponent<CrosshairControl>();
+        _bottomHUDEnabled = true;
+        _hudEnabled = true;
+        _allowToggle = true;
     }
 	
     private void enableNormalCrossHairs()
@@ -121,9 +123,29 @@ public class HUDControl : MonoBehaviour {
                 }
             }
         }
+        if (Input.GetKeyDown(KeyCode.Period) && _allowToggle)
+        {
+            if (_hudEnabled)
+            {
+                _hudEnabled = false;
+                this.disableBottomHud();
+                this.disableEventLog();
+                this.disableRadar();
+            } else
+            {
+                _hudEnabled = true;
+                this.enableBottomHud();
+                this.enableEventLog();
+                this.enableRadar();
+            }
+        }
         if (_targetted)
         {
-            targetCamera.enabled = true;
+            if (_bottomHUDEnabled)
+            {
+                transform.Find("bottom_hud").gameObject.SetActive(true);
+                targetCamera.enabled = true;
+            }
 
             // place the target camera
             targetCamera.transform.rotation = Quaternion.LookRotation(_targetted.transform.position - transform.parent.position);
@@ -135,9 +157,7 @@ public class HUDControl : MonoBehaviour {
             // determine lead/intercept point
             _int = FindInterceptVector(transform.parent.position, 320.0f, _targetted.transform.position, _targetted.GetComponent<Rigidbody>().velocity);
             _forward = transform.parent.forward;
-
-            tempTarget.transform.position = _targetted.transform.position + _int;
-            _dot = Vector3.Dot(_int.normalized, transform.parent.forward);
+            _dot = Vector3.Dot(_int.normalized, _forward);
             if (_dot > 0.9998f)
             {
                 this.enableTargetCrosshairs();
@@ -145,7 +165,9 @@ public class HUDControl : MonoBehaviour {
             {
                 this.enableNormalCrossHairs();
             }
-            _intDist = Vector3.Distance(_targetted.transform.position, _int);
+        } else
+        {
+            this.enableNormalCrossHairs();
         }
 	}
 
@@ -229,5 +251,61 @@ public class HUDControl : MonoBehaviour {
     public void hudMessage(string _msg)
     {
         hudFeedback.setText(_msg);
+    }
+
+    public void enabledCrosshairs()
+    {
+        crosshairs.Enabled = true;
+    }
+
+    public void disableCrosshairs()
+    {
+        crosshairs.Enabled = false;
+    }
+
+    public void enableRadar()
+    {
+        transform.Find("FRadar").GetComponent<Image>().enabled = true;
+        transform.Find("RRadar").GetComponent<Image>().enabled = true;
+        GetComponent<Radar>().Enabled = true;
+    }
+
+    public void disableRadar()
+    {
+        transform.Find("FRadar").GetComponent<Image>().enabled = false;
+        transform.Find("RRadar").GetComponent<Image>().enabled = false;
+        GetComponent<Radar>().Enabled = false;
+    }
+
+    public void disableEventLog()
+    {
+        transform.Find("EventLog").gameObject.SetActive(false);
+    }
+
+    public void enableEventLog()
+    {
+        transform.Find("EventLog").gameObject.SetActive(true);
+    }
+
+    public void disableBottomHud()
+    {
+        transform.Find("bottom_hud").gameObject.SetActive(false);
+        _bottomHUDEnabled = false;
+        targetCamera.enabled = false;
+    }
+
+    public void enableBottomHud()
+    {
+        _bottomHUDEnabled = true;
+    }
+
+    public void enableToggle()
+    {
+        _allowToggle = true;
+    }
+
+    public void disableToggle()
+    {
+        _allowToggle = false;
     }
 }

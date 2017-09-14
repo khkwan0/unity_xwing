@@ -64,9 +64,14 @@ public class directional_control : MonoBehaviour {
         return _turnSpeed;
     }
 
-    public void turnTowardsTarget(GameObject target)
+    public void turnTowardsTarget(GameObject target, float turnTime)
     {
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.transform.position - transform.position), 2.0f);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.transform.position - transform.position), turnTime);
+    }
+
+    public void turnTowardsTarget(Vector3 target, float turnTime)
+    {
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target), turnTime);
     }
     public void stopTurning()
     {

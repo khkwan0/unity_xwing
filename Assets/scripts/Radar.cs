@@ -42,6 +42,21 @@ public class Radar : MonoBehaviour {
 
     private GameObject _targettedBlip;
 
+    [SerializeField]
+    private bool _enabled;
+
+    public bool Enabled
+    {
+        get
+        {
+            return _enabled;
+        }
+
+        set
+        {
+            _enabled = value;
+        }
+    }
 	void Start () {
 
         // get transform parameters
@@ -222,37 +237,41 @@ public class Radar : MonoBehaviour {
 	void Update () {
         clearRadar(frontRadarPanel);
         clearRadar(rearRadarPanel);
-        foreach (GameObject foe in foes)
+        if (_enabled)
         {
-            drawIndicator(foe);
-            if (foe != null)
+            foreach (GameObject foe in foes)
             {
-                loc = referenceCamera.WorldToScreenPoint(foe.transform.position);
-                screenLoc = loc;
-                loc.Scale(_v_scale);
-                if (loc.z > 0.0f)
+                drawIndicator(foe);
+                if (foe != null)
                 {
-                    drawBlip(frontRadarPanel, c_foe, loc, true, foe.GetComponent<ShipMeta>().isTargetted());
-                } else
-                {
-                    drawBlip(rearRadarPanel, c_foe, loc, false, foe.GetComponent<ShipMeta>().isTargetted());
+                    loc = referenceCamera.WorldToScreenPoint(foe.transform.position);
+                    screenLoc = loc;
+                    loc.Scale(_v_scale);
+                    if (loc.z > 0.0f)
+                    {
+                        drawBlip(frontRadarPanel, c_foe, loc, true, foe.GetComponent<ShipMeta>().isTargetted());
+                    }
+                    else
+                    {
+                        drawBlip(rearRadarPanel, c_foe, loc, false, foe.GetComponent<ShipMeta>().isTargetted());
+                    }
+
                 }
- 
             }
-        }
-        foreach (GameObject friend in friends)
-        {
-            if (friend != null)
+            foreach (GameObject friend in friends)
             {
-                loc = referenceCamera.WorldToScreenPoint(friend.transform.position);
-                loc.Scale(_v_scale);
-                if (loc.z > 0.0f)
+                if (friend != null)
                 {
-                    drawBlip(frontRadarPanel, c_friend, loc, true, friend.GetComponent<ShipMeta>().isTargetted());
-                }
-                else
-                {
-                    drawBlip(rearRadarPanel, c_friend, loc, false, friend.GetComponent<ShipMeta>().isTargetted());
+                    loc = referenceCamera.WorldToScreenPoint(friend.transform.position);
+                    loc.Scale(_v_scale);
+                    if (loc.z > 0.0f)
+                    {
+                        drawBlip(frontRadarPanel, c_friend, loc, true, friend.GetComponent<ShipMeta>().isTargetted());
+                    }
+                    else
+                    {
+                        drawBlip(rearRadarPanel, c_friend, loc, false, friend.GetComponent<ShipMeta>().isTargetted());
+                    }
                 }
             }
         }

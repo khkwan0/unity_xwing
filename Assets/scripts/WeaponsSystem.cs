@@ -8,7 +8,6 @@ public class WeaponsSystem : MonoBehaviour {
     public GameObject laser;
 
     public float laserSpeed;
-    // Use this for initialization
 
     public AudioSource laserSound;
 
@@ -17,8 +16,7 @@ public class WeaponsSystem : MonoBehaviour {
 	void Start () {
         hotCannon = 0;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		
 	}
@@ -42,7 +40,7 @@ public class WeaponsSystem : MonoBehaviour {
             {
                 hotCannon = 0;
             }
-            shootTimeout = 0.3f;
+            shootTimeout = 0.2f;
         } else
         {
             shootTimeout -= Time.fixedDeltaTime;

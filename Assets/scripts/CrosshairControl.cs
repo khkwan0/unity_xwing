@@ -11,11 +11,28 @@ public class CrosshairControl : MonoBehaviour {
 
     public AudioSource s_target;
     private bool played;
-	void Start () {
+    [SerializeField]
+    private bool _enabled;
+
+    public bool Enabled
+    {
+        get
+        {
+            return _enabled;
+        }
+
+        set
+        {
+            _enabled = value;
+        }
+    }
+
+    void Start () {
 
         normal = transform.Find("crosshairs_n").GetComponent<RawImage>();
         target = transform.Find("crosshairs_t").GetComponent<RawImage>();
         played = false;
+        _enabled = true;
 		
 	}
 	
@@ -26,19 +43,31 @@ public class CrosshairControl : MonoBehaviour {
 
     public void enableNormal()
     {
-        normal.enabled = true;
-        target.enabled = false;
-        played = false;
+        if (_enabled)
+        {
+            normal.enabled = true;
+            target.enabled = false;
+            played = false;
+        } else
+        {
+            normal.enabled = target.enabled = false;
+        }
     }
 
     public void enabledTarget()
     {
-        normal.enabled = false;
-        target.enabled = true;
-        if (s_target != null && !played)
+        if (_enabled)
         {
-            s_target.Play();
-            played = true;
+            normal.enabled = false;
+            target.enabled = true;
+            if (s_target != null && !played)
+            {
+                s_target.Play();
+                played = true;
+            }
+        } else
+        {
+            normal.enabled = target.enabled = false;
         }
     }
 }

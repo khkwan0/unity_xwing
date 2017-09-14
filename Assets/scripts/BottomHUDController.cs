@@ -26,7 +26,7 @@ public class BottomHUDController : MonoBehaviour {
         cargo = transform.Find("cargo").GetComponent<Text>();
         speed = transform.Find("speed").GetComponent<Text>();
 
-        cargoText = "No Cargo";
+        cargoText = "Cargo: Unknown";
            
 	}
 	
