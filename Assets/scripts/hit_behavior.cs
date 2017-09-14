@@ -9,7 +9,7 @@ public class hit_behavior : MonoBehaviour {
 
         if (collision.gameObject.tag == "damageable" || (collision.gameObject.GetComponent<ExtraTags>() != null && collision.gameObject.GetComponent<ExtraTags>().hasTag("damageable")))
         {
-            collision.transform.GetComponent<health>().doDamage(0);
+            collision.transform.GetComponent<health>().doDamage(25);
             Destroy(transform.gameObject);
 
             Debug.Log("HIT" + collision.gameObject);

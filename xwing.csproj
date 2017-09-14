@@ -104,6 +104,7 @@
     <Compile Include="Assets\scripts\Radar.cs" />
     <Compile Include="Assets\scripts\ShipMeta.cs" />
     <Compile Include="Assets\scripts\shoot.cs" />
+    <Compile Include="Assets\scripts\StarField.cs" />
     <Compile Include="Assets\scripts\TargetLeadGeneration.cs" />
     <Compile Include="Assets\scripts\Thrusters.cs" />
     <Compile Include="Assets\scripts\tiefighter_ai.cs" />

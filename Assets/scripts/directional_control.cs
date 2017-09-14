@@ -73,6 +73,7 @@ public class directional_control : MonoBehaviour {
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target), turnTime);
     }
+
     public void stopTurning()
     {
         _yaw = new Vector3(0.0f, 0.0f, 0.0f);

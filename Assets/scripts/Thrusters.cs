@@ -50,6 +50,21 @@ public class Thrusters : MonoBehaviour {
         rb.AddForce(transform.forward * throttle * (_maxThrust + speed - dragForce));
     }
 
+    private void Update()
+    {
+        if (throttle > 0.0f)
+        {
+            engineFullThrottleSound.volume = throttle * 0.07f;
+            if (!engineFullThrottleSound.isPlaying)
+            {
+                engineFullThrottleSound.Play();
+            }
+        } else
+        {
+            engineFullThrottleSound.Stop();
+        }
+    }
+
     public void setFullThrottle()
     {
         throttle = 1.0f;
