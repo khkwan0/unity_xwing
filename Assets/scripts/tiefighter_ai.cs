@@ -44,8 +44,7 @@ public class tiefighter_ai : MonoBehaviour {
         //gameObject.GetComponent<Thrusters>().setFullThrottle();
         dirControl = gameObject.GetComponent<directional_control>();
         thrusters = gameObject.GetComponent<Thrusters>();
-        weapons = gameObject.GetComponent<WeaponsSystem>();
-     
+        weapons = gameObject.GetComponent<WeaponsSystem>();     
     }
 
     private void OnTriggerStay(Collider other)

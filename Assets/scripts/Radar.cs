@@ -58,7 +58,7 @@ public class Radar : MonoBehaviour {
         _enabled = true;
     }
 
-    private void drawBlip(GameObject _targetRadar, Color _color, Vector3 _loc, bool _isFront, bool targetted)
+    private void drawBlip(GameObject _targetRadar, Color _color, Vector3 _loc, bool _isFront, bool targetted, GameObject _target)
     {
         GameObject _blip = Instantiate(blip);
         _blip.transform.SetParent(_targetRadar.transform);
@@ -115,6 +115,7 @@ public class Radar : MonoBehaviour {
             _targettedBlip = Instantiate(targettedBlip);
             _targettedBlip.transform.SetParent(_targetRadar.transform);
             _targettedBlip.transform.localPosition = _loc;
+            this.drawIndicator(_target);
         }
 
     }
@@ -221,7 +222,7 @@ public class Radar : MonoBehaviour {
             rearReticle.GetComponent<Image>().enabled = false;
         }
     }
-	// Update is called once per frame
+
 	void Update () {
         clearRadar(frontRadarPanel);
         clearRadar(rearRadarPanel);
@@ -229,7 +230,7 @@ public class Radar : MonoBehaviour {
         {
             foreach (GameObject foe in foes)
             {
-                drawIndicator(foe);
+
                 if (foe != null)
                 {
                     loc = referenceCamera.WorldToScreenPoint(foe.transform.position);
@@ -237,11 +238,11 @@ public class Radar : MonoBehaviour {
                     loc.Scale(_v_scale);
                     if (loc.z > 0.0f)
                     {
-                        drawBlip(frontRadarPanel, c_foe, loc, true, foe.GetComponent<ShipMeta>().isTargetted());
+                        drawBlip(frontRadarPanel, c_foe, loc, true, foe.GetComponent<ShipMeta>().isTargetted(), foe);
                     }
                     else
                     {
-                        drawBlip(rearRadarPanel, c_foe, loc, false, foe.GetComponent<ShipMeta>().isTargetted());
+                        drawBlip(rearRadarPanel, c_foe, loc, false, foe.GetComponent<ShipMeta>().isTargetted(), foe);
                     }
 
                 }
@@ -254,11 +255,11 @@ public class Radar : MonoBehaviour {
                     loc.Scale(_v_scale);
                     if (loc.z > 0.0f)
                     {
-                        drawBlip(frontRadarPanel, c_friend, loc, true, friend.GetComponent<ShipMeta>().isTargetted());
+                        drawBlip(frontRadarPanel, c_friend, loc, true, friend.GetComponent<ShipMeta>().isTargetted(), friend);
                     }
                     else
                     {
-                        drawBlip(rearRadarPanel, c_friend, loc, false, friend.GetComponent<ShipMeta>().isTargetted());
+                        drawBlip(rearRadarPanel, c_friend, loc, false, friend.GetComponent<ShipMeta>().isTargetted(), friend);
                     }
                 }
             }

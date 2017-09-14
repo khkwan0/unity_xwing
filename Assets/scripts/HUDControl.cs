@@ -145,6 +145,7 @@ public class HUDControl : MonoBehaviour {
             {
                 transform.Find("bottom_hud").gameObject.SetActive(true);
                 targetCamera.enabled = true;
+                targetCamera.pixelRect = new Rect(Screen.width/2 - targetCamera.pixelWidth/2, 30, 300, 200);
             }
 
             // place the target camera

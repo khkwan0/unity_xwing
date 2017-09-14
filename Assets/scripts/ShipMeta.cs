@@ -10,6 +10,9 @@ public class ShipMeta : MonoBehaviour {
     public float absoluteMaxSpeed;
     public float maxTurnSpeed;
 
+    public string groupName;
+    public string callSign;
+
     [SerializeField]
     private bool _isTargetted;  
     void Start () {
