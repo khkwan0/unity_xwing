@@ -267,14 +267,14 @@ public class HUDControl : MonoBehaviour {
     {
         transform.Find("FRadar").GetComponent<Image>().enabled = true;
         transform.Find("RRadar").GetComponent<Image>().enabled = true;
-        GetComponent<Radar>().Enabled = true;
+        GetComponent<Radar>()._enabled = true;
     }
 
     public void disableRadar()
     {
         transform.Find("FRadar").GetComponent<Image>().enabled = false;
         transform.Find("RRadar").GetComponent<Image>().enabled = false;
-        GetComponent<Radar>().Enabled = false;
+        GetComponent<Radar>()._enabled = false;
     }
 
     public void disableEventLog()

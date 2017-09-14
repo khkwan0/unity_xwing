@@ -42,21 +42,8 @@ public class Radar : MonoBehaviour {
 
     private GameObject _targettedBlip;
 
-    [SerializeField]
-    private bool _enabled;
+    public bool _enabled;
 
-    public bool Enabled
-    {
-        get
-        {
-            return _enabled;
-        }
-
-        set
-        {
-            _enabled = value;
-        }
-    }
 	void Start () {
 
         // get transform parameters
@@ -68,6 +55,7 @@ public class Radar : MonoBehaviour {
 
         reticle.GetComponent<Image>().enabled = false;
         rearReticle.GetComponent<Image>().enabled = false;
+        _enabled = true;
     }
 
     private void drawBlip(GameObject _targetRadar, Color _color, Vector3 _loc, bool _isFront, bool targetted)
