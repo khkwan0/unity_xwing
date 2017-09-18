@@ -32,8 +32,7 @@ public class CrosshairControl : MonoBehaviour {
         normal = transform.Find("crosshairs_n").GetComponent<RawImage>();
         target = transform.Find("crosshairs_t").GetComponent<RawImage>();
         played = false;
-        _enabled = true;
-		
+        _enabled = true;		
 	}
 	
 	// Update is called once per frame

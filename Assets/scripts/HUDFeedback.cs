@@ -10,6 +10,8 @@ public class HUDFeedback : MonoBehaviour {
     private float timeout;
 	void Start () {
         text = GetComponent<Text>();
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+
 	}
 	
 	// Update is called once per frame
@@ -23,7 +25,13 @@ public class HUDFeedback : MonoBehaviour {
         }
 	}
 
-    public void setText(string _text, float _timeout = 2.0f)
+    public void setText(string _text)
+    {
+        text.text = _text;
+        timeout = 2.0f;
+    }
+
+    public void setText(string _text, float _timeout)
     {
         text.text = _text;
         timeout = _timeout;

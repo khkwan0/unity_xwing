@@ -20,6 +20,9 @@ public class directional_control : MonoBehaviour {
     [SerializeField]
     private float maxTurnSpeed;
 
+    [SerializeField]
+    private GameObject _other;
+
     void Start () {
         rb = gameObject.GetComponent<Rigidbody>();
         maxTurnSpeed = gameObject.GetComponent<ShipMeta>().maxTurnSpeed;
@@ -27,7 +30,6 @@ public class directional_control : MonoBehaviour {
         _direction = new Vector3(0.0f, 0.0f);
     }
 	
-	// Update is called once per frame
 	void FixedUpdate () {
         _direction = _pitch + _yaw + _roll;
         rb.AddRelativeTorque(_direction * _turnSpeed * maxTurnSpeed);
@@ -67,6 +69,12 @@ public class directional_control : MonoBehaviour {
     public void turnTowardsTarget(GameObject target, float turnTime)
     {
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(target.transform.position - transform.position), turnTime);
+    }
+
+    public void turnAway(GameObject other, float howMuch, float turnTime)
+    {
+        _other = other;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Vector3.Cross(transform.position, other.transform.position)), turnTime);
     }
 
     public void turnTowardsTarget(Vector3 target, float turnTime)

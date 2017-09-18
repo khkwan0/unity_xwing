@@ -17,6 +17,8 @@ public class shoot : MonoBehaviour {
     }
 
     private int hotCannonIndex;
+    [SerializeField]
+    private bool weaponsEnabled;
 
     private float _shootTimeout;
     [SerializeField]
@@ -26,33 +28,48 @@ public class shoot : MonoBehaviour {
     // Use this for initialization
     void Start () {
         firingConfiguration = _firingConfiguration.oneCannon;
+        weaponsEnabled = true;
 	}
+
+    public void enableWeapons()
+    {
+        weaponsEnabled = true;
+    }
+
+    public void disableWeapons()
+    {
+        weaponsEnabled = false;
+    }
      
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (Input.GetButton("Fire1"))
+        if (weaponsEnabled)
         {
-            if (_shootTimeout <= 0.0f)
+            if (Input.GetButton("Fire1"))
             {
+                if (_shootTimeout <= 0.0f)
+                {
 
-                StartCoroutine("Fire");
-                //altFire();
-                switch (firingConfiguration) {
-                    case _firingConfiguration.oneCannon: _shootTimeout = 0.2f; break;
-                    case _firingConfiguration.twoCannons: _shootTimeout = 0.5f; break;
-                    case _firingConfiguration.allCannons: _shootTimeout = 1.0f; break;
+                    StartCoroutine("Fire");
+                    //altFire();
+                    switch (firingConfiguration)
+                    {
+                        case _firingConfiguration.oneCannon: _shootTimeout = 0.2f; break;
+                        case _firingConfiguration.twoCannons: _shootTimeout = 0.5f; break;
+                        case _firingConfiguration.allCannons: _shootTimeout = 1.0f; break;
+                    }
                 }
+                _shootTimeout -= Time.fixedDeltaTime;
             }
-            _shootTimeout -= Time.fixedDeltaTime;
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            _shootTimeout = 0.0f;
-            switch (firingConfiguration)
+            if (Input.GetKeyDown(KeyCode.X))
             {
-                case _firingConfiguration.oneCannon: firingConfiguration = _firingConfiguration.twoCannons;break;
-                case _firingConfiguration.twoCannons: firingConfiguration = _firingConfiguration.allCannons;break;
-                case _firingConfiguration.allCannons: firingConfiguration = _firingConfiguration.oneCannon;break;
+                _shootTimeout = 0.0f;
+                switch (firingConfiguration)
+                {
+                    case _firingConfiguration.oneCannon: firingConfiguration = _firingConfiguration.twoCannons; break;
+                    case _firingConfiguration.twoCannons: firingConfiguration = _firingConfiguration.allCannons; break;
+                    case _firingConfiguration.allCannons: firingConfiguration = _firingConfiguration.oneCannon; break;
+                }
             }
         }
     }
@@ -66,6 +83,7 @@ public class shoot : MonoBehaviour {
                 laserSoundBasic.Play();
             }
             var _laser = (GameObject)Instantiate(laser, bulletSpawn[hotCannonIndex]);
+            _laser.GetComponent<hit_behavior>().setShooter(gameObject);
             _laser.GetComponent<Rigidbody>().AddForce(bulletSpawn[hotCannonIndex].forward * speed);
             hotCannonIndex++;
             if (hotCannonIndex>3)
@@ -84,8 +102,10 @@ public class shoot : MonoBehaviour {
             if (hotCannonIndex < 2)
             {
                 var _laser = (GameObject)Instantiate(laser, bulletSpawn[hotCannonIndex]);
+                _laser.GetComponent<hit_behavior>().setShooter(gameObject);
                 _laser.GetComponent<Rigidbody>().AddForce(bulletSpawn[hotCannonIndex].forward * speed);
                 var _laser2 = (GameObject)Instantiate(laser, bulletSpawn[hotCannonIndex+2]);
+                _laser2.GetComponent<hit_behavior>().setShooter(gameObject);
                 _laser2.GetComponent<Rigidbody>().AddForce(bulletSpawn[hotCannonIndex].forward * speed);
                 Destroy(_laser, _laserLifetime);
                 Destroy(_laser2, _laserLifetime);
@@ -110,6 +130,7 @@ public class shoot : MonoBehaviour {
             for (i = 0; i < 4; i++)
             {
                 var _laser = (GameObject)Instantiate(laser, bulletSpawn[i]);
+                _laser.GetComponent<hit_behavior>().setShooter(gameObject);
                 _laser.GetComponent<Rigidbody>().AddForce(bulletSpawn[i].forward * speed);
                 Destroy(_laser, _laserLifetime);
                 yield return null;

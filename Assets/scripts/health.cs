@@ -14,6 +14,8 @@ public class health : MonoBehaviour {
     public GameObject explosionGfx;
     private bool dead = false;
     private float timeLeft = 2.2f;
+
+    private GameObject _driver;
 	
 	// Update is called once per frame
 	void Update () {
@@ -59,7 +61,10 @@ public class health : MonoBehaviour {
                 {
                     collider.enabled = false;
                 }
+                gameObject.GetComponent<ShipMeta>().deTarget();
+                GameObject.FindGameObjectsWithTag("driver")[0].GetComponent<Driver>().destroyNotify(gameObject);
                 GameObject.Find("HUD").GetComponent<Radar>().deRegister(gameObject);
+                GameObject.Find("HUD").GetComponent<HUDControl>().clearReticles();
                 Destroy(transform.Find("model").transform.gameObject);
                 explosionGfx.GetComponent<ParticleSystem>().Play(true);
             }

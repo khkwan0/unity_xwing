@@ -38,6 +38,7 @@ public class HUDControl : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         _eventLog = GameObject.Find("EventText");
+
         _oldTarget = null;
         bottomHud = transform.Find("bottom_hud").gameObject.GetComponent<BottomHUDController>();
         hudFeedback = transform.Find("feedback").gameObject.GetComponent<HUDFeedback>();
@@ -49,7 +50,11 @@ public class HUDControl : MonoBehaviour {
 
     private void Start()
     {
-        transform.parent.GetComponent<control>().targetChaseCamera.transform.localPosition = new Vector3(0.0f, 5.0f, -50.0f);
+        if (transform.parent.GetComponent<control>().targetChaseCamera != null)
+        {
+            transform.parent.GetComponent<control>().targetChaseCamera.transform.localPosition = new Vector3(0.0f, 5.0f, -50.0f);
+        }
+
     }
 
     private void enableNormalCrossHairs()
@@ -243,9 +248,22 @@ public class HUDControl : MonoBehaviour {
     public void appendToLog(Color _textColor, string _text)
     {
 
-        theText += _text;
+        theText = _text + theText;
         _eventLog.GetComponent<Text>().color = _textColor;
         _eventLog.GetComponent<Text>().text = theText;
+        GameObject.Find("EventLog").GetComponent<ScrollRect>().verticalNormalizedPosition = 0.0f;
+
+    }
+
+    public void clearReticles()
+    {
+        transform.Find("reticle").GetComponent<Image>().enabled = false;
+        transform.Find("rear_reticle").GetComponent<Image>().enabled = false;
+        _targetted.GetComponent<ShipMeta>().deTarget();
+        _targetted = null;
+        _oldTarget = null;
+        targetCamera.enabled = false;
+        bottomHud.deTarget();
     }
 
     public GameObject getTargetted()
@@ -297,6 +315,17 @@ public class HUDControl : MonoBehaviour {
         transform.Find("EventLog").gameObject.SetActive(true);
     }
 
+    public void hideEventLog()
+    {
+        transform.Find("EventLog").gameObject.GetComponent<Image>().enabled = false;
+        _eventLog.GetComponent<Text>().enabled = false;
+    }
+
+    public void showEventLog()
+    {
+        transform.Find("EventLog").gameObject.GetComponent<Image>().enabled = true;
+        _eventLog.GetComponent<Text>().enabled = true;
+    }
     public void disableBottomHud()
     {
         transform.Find("bottom_hud").gameObject.SetActive(false);

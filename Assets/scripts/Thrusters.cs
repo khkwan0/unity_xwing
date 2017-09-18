@@ -10,6 +10,9 @@ public class Thrusters : MonoBehaviour {
     private float throttle;
     private Rigidbody rb;
 
+    [Range(0, 1)]
+    public float _maxEngineVolume;
+
     [SerializeField]
     private float _maxSpeed;
     [SerializeField]
@@ -21,11 +24,19 @@ public class Thrusters : MonoBehaviour {
 
     private float _availableThrusters; // 0-1, dependent on power distribution -- shields, weapons
 
-	void Start () {
+    [SerializeField]
+    private bool inHyper;
+    [SerializeField]
+    private Vector3 hyperDest;
+
+    public float hyperSpeed;
+	void Awake () {
         _availableThrusters = 1.0f;
         rb = gameObject.GetComponent<Rigidbody>();
         _maxSpeed = this.calcMaxSpeed();
-        _maxThrust = this.calcMaxForce(_maxSpeed);   
+        _maxThrust = this.calcMaxForce(_maxSpeed);
+        inHyper = false;
+        hyperSpeed = 999.0f;
 	}
 
     private float calcMaxForce(float _maxSpeed)
@@ -44,30 +55,46 @@ public class Thrusters : MonoBehaviour {
     }
 
     void FixedUpdate () {
-    //    rb.AddForce(transform.forward * throttle * (_maxThrust + 2.0f * throttle));
-        speed = rb.velocity.magnitude;
-        dragForce = speed * (1 - Time.deltaTime * rb.drag);
-        rb.AddForce(transform.forward * throttle * (_maxThrust + speed - dragForce));
+        //    rb.AddForce(transform.forward * throttle * (_maxThrust + 2.0f * throttle));
+        if (!inHyper)
+        {
+            speed = rb.velocity.magnitude;
+            dragForce = speed * (1 - Time.deltaTime * rb.drag);
+            rb.AddForce(transform.forward * throttle * (_maxThrust + speed - dragForce));
+        }
+
     }
 
     private void Update()
     {
-        if (throttle > 0.0f)
+        if (!inHyper)
         {
-            engineFullThrottleSound.volume = throttle * 0.07f;
-            if (!engineFullThrottleSound.isPlaying)
+            if (throttle > 0.0f)
             {
-                engineFullThrottleSound.Play();
+                if (!engineFullThrottleSound.isPlaying)
+                {
+                    engineFullThrottleSound.Play();
+                }
             }
-        } else
+            else
+            {
+                engineFullThrottleSound.Stop();
+            }
+        }
+        if (inHyper)
         {
-            engineFullThrottleSound.Stop();
+            rb.velocity = transform.forward * hyperSpeed;
+            if (Vector3.Distance(transform.position, hyperDest) < 10.0f)
+            {
+                endHyper();
+            }
         }
     }
 
     public void setFullThrottle()
     {
         throttle = 1.0f;
+        engineFullThrottleSound.volume = _maxEngineVolume * throttle;
     }
 
     public void setNonThrottle()
@@ -78,21 +105,25 @@ public class Thrusters : MonoBehaviour {
     public void setOneThirdThrottle()
     {
         throttle = 0.333f;
+        engineFullThrottleSound.volume = _maxEngineVolume * throttle;
     }
 
     public void setTwoThirdsThrottle()
     {
         throttle = 0.6666f;
+        engineFullThrottleSound.volume = _maxEngineVolume * throttle;
     }
 
     public void setHalfThrottle()
     {
         throttle = 0.5f;
+        engineFullThrottleSound.volume = _maxEngineVolume * throttle;
     }
 
     public void setDirectThrottle(float _amt)
     {
         throttle = _amt;
+        engineFullThrottleSound.volume = _maxEngineVolume * throttle;
     }
 
     public void setSpeed(float _targetSpeed)
@@ -102,5 +133,18 @@ public class Thrusters : MonoBehaviour {
         {
             throttle = 1.0f;
         }
+    }
+
+    public void startHyper(Vector3 _dst)
+    {
+        rb.velocity = transform.forward * hyperSpeed;
+        hyperDest = _dst;
+        inHyper = true;
+    }
+
+    public void endHyper()
+    {
+        rb.velocity = transform.forward * 0.0f;
+        inHyper = false;
     }
 }

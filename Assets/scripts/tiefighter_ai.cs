@@ -28,6 +28,7 @@ public class tiefighter_ai : MonoBehaviour {
 
     enum __state
     {
+        spawn,
         idle,
         attack,
         flee,
@@ -36,21 +37,47 @@ public class tiefighter_ai : MonoBehaviour {
 
     [SerializeField]
     private __state _state;
+    [SerializeField]
+    private __state _prevState;
 
     [SerializeField]
     float timeout;
-    
-	void Start () {
+
+    [SerializeField]
+    private GameObject other;
+
+    [SerializeField]
+    private bool evading;
+	void Awake () {
         //gameObject.GetComponent<Thrusters>().setFullThrottle();
         dirControl = gameObject.GetComponent<directional_control>();
         thrusters = gameObject.GetComponent<Thrusters>();
-        weapons = gameObject.GetComponent<WeaponsSystem>();     
+        weapons = gameObject.GetComponent<WeaponsSystem>();
+        _state = __state.spawn;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {
-        timeout = 0.0f;
-        _state = __state.evade;
+        timeout = 2.0f;
+        if (_state == _prevState)
+        {
+            _prevState = _state;
+        }
+
+        other = _other.gameObject;
+        if (other.name == "Laser(Clone)")
+        {
+            target = other.GetComponent<hit_behavior>().getShooter();
+        } else
+        {
+            target = other.gameObject;
+        }
+        //evading = true;
+        //_state = __state.attack;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
     }
 
     // Update is called once per frame
@@ -62,6 +89,7 @@ public class tiefighter_ai : MonoBehaviour {
     {
         target = _target;
     }
+
     void determineWhatToDo()
     {
         if (target)
@@ -71,7 +99,7 @@ public class tiefighter_ai : MonoBehaviour {
         if (_state == __state.attack)
         {
             thrusters.setOneThirdThrottle();
-            //dirControl.stopTurning();
+            dirControl.stopTurning();
             _targetLead = FindInterceptVector(transform.position, 320.0f, target.transform.position, target.transform.GetComponent<Rigidbody>().velocity);
             dirControl.turnTowardsTarget(_targetLead, 1.0f);
             dotProduct = Vector3.Dot(_targetLead.normalized, transform.forward);
@@ -82,23 +110,32 @@ public class tiefighter_ai : MonoBehaviour {
         }
         if (_state == __state.evade)
         {
-            /*
-            thrusters.setOneThirdThrottle();
-            dirControl.yawRight();
-            dirControl.pitchUp();
-            */
-       
-            this.setTarget(GameObject.Find("player_xwing"));
-
-            if (timeout <= 0.0f)
+            if (!evading)
             {
-                _state = __state.attack;
+                dirControl.turnAway(other, 0.5f, 2.0f);  // hard turn 90 degrees away
+                thrusters.setOneThirdThrottle();
             }
-            else
+
+            if (timeout > 0.0f) 
             {
                 timeout -= Time.fixedDeltaTime;
             }
+            else
+            {
+                _state = _prevState;
+                evading = false;
+            }
         }
+
+        if (_state == __state.idle)
+        {
+            thrusters.setNonThrottle();
+        }
+    }
+
+    public void hyperTo(Vector3 _dest)
+    {
+        thrusters.startHyper(_dest);
     }
 
     private Vector3 FindInterceptVector(Vector3 shotOrigin, float shotSpeed, Vector3 targetOrigin, Vector3 targetVel)

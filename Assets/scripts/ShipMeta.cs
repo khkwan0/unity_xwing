@@ -13,6 +13,22 @@ public class ShipMeta : MonoBehaviour {
     public string groupName;
     public string callSign;
 
+
+    public string faction; // imp, ra, other...
+    
+    enum __mission
+    {
+        defend,
+        attack,
+        escort,
+        guard         
+    }
+
+    public GameObject missionTarget;
+
+    [SerializeField]
+    private __mission _mission;
+
     [SerializeField]
     private bool _isTargetted;  
     void Start () {
