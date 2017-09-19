@@ -5,8 +5,6 @@ using UnityEngine;
 public class Thrusters : MonoBehaviour {
 
     public AudioSource engineFullThrottleSound;
-
-    [SerializeField]
     private float throttle;
     private Rigidbody rb;
 
@@ -61,14 +59,6 @@ public class Thrusters : MonoBehaviour {
             speed = rb.velocity.magnitude;
             dragForce = speed * (1 - Time.deltaTime * rb.drag);
             rb.AddForce(transform.forward * throttle * (_maxThrust + speed - dragForce));
-        }
-
-    }
-
-    private void Update()
-    {
-        if (!inHyper)
-        {
             if (throttle > 0.0f)
             {
                 if (!engineFullThrottleSound.isPlaying)
@@ -83,12 +73,19 @@ public class Thrusters : MonoBehaviour {
         }
         if (inHyper)
         {
+            engineFullThrottleSound.Stop();
             rb.velocity = transform.forward * hyperSpeed;
+            //rb.AddForce(transform.forward * hyperSpeed);
             if (Vector3.Distance(transform.position, hyperDest) < 10.0f)
             {
                 endHyper();
             }
         }
+    }
+
+    private void Update()
+    {
+
     }
 
     public void setFullThrottle()
@@ -146,5 +143,15 @@ public class Thrusters : MonoBehaviour {
     {
         rb.velocity = transform.forward * 0.0f;
         inHyper = false;
+    }
+
+    public bool isInHyper()
+    {
+        return inHyper;
+    }
+
+    public void stopEngineSound()
+    {
+
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StarField : MonoBehaviour {
 
-    private Transform thisTransform;
     private ParticleSystem.Particle[] points;
     private float starDistanceSqr;
     private float starClipDistanceSqr;
@@ -21,7 +20,7 @@ public class StarField : MonoBehaviour {
     private Vector3 oneStarPos;
 
     void Start() {
-        thisTransform = GetComponent<Transform>();
+        //thisTransform = GetComponent<Transform>();
         starDistanceSqr = starDistance * starDistance;
         starClipDistanceSqr = starClipDistance * starClipDistance;
     }

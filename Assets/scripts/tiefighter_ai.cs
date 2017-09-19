@@ -76,6 +76,11 @@ public class tiefighter_ai : MonoBehaviour {
         //_state = __state.attack;
     }
 
+    public void setStateAttack()
+    {
+        this._state = __state.attack;
+    }
+
     private void OnTriggerExit(Collider other)
     {
     }
@@ -96,7 +101,7 @@ public class tiefighter_ai : MonoBehaviour {
         {
             distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         }
-        if (_state == __state.attack)
+        if (_state == __state.attack && !gameObject.GetComponent<Thrusters>().isInHyper())
         {
             thrusters.setOneThirdThrottle();
             dirControl.stopTurning();

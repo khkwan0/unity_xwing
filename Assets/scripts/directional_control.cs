@@ -23,11 +23,15 @@ public class directional_control : MonoBehaviour {
     [SerializeField]
     private GameObject _other;
 
+    private bool hypering;
+
+
     void Start () {
         rb = gameObject.GetComponent<Rigidbody>();
         maxTurnSpeed = gameObject.GetComponent<ShipMeta>().maxTurnSpeed;
         this.setFullTurnSpeed();
         _direction = new Vector3(0.0f, 0.0f);
+        hypering = false;
     }
 	
 	void FixedUpdate () {
@@ -35,9 +39,14 @@ public class directional_control : MonoBehaviour {
         rb.AddRelativeTorque(_direction * _turnSpeed * maxTurnSpeed);
     }
 
+    public void setHypering(bool _hypering)
+    {
+        hypering = _hypering;
+    }
+
     private void Update()
     {
-        if (gameObject.tag == "Player")
+        if (gameObject.tag == "Player" && !hypering)
         {
             rb.AddRelativeTorque(Input.GetAxis("Vertical") * _turnSpeed, Input.GetAxis("Horizontal") * _turnSpeed, 0.0f);
             rb.AddRelativeTorque(0.0f, 0.0f, Input.GetAxis("RollLeft") * _turnSpeed);

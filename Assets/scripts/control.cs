@@ -20,16 +20,23 @@ public class control : MonoBehaviour {
     public Camera chaseCamera;
     public Camera targetChaseCamera;
     public Camera targetCamera;
+    public Camera hyperCamera;
+
+    public AudioSource hyperSpaceSound;
 
     private GameObject HUD;
     private GameObject _crossHairs;
     private HUDControl hudControl;
+
+    private float hyperChargeTimeout;
+    private bool hypering;
 
     [SerializeField]
     private GameObject __target;
 
     private Thrusters thrusters;
     private bool throttleControlEnabled;
+    private Vector3 frozenPosition;
 
     void Awake()
     {
@@ -42,6 +49,7 @@ public class control : MonoBehaviour {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         throttleControlEnabled = true;
+        hypering = false;
     }
 
     void Start () {
@@ -64,73 +72,116 @@ public class control : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(k_cockpitCamera))
+        if (hypering)
         {
-            chaseCamera.enabled = false;
-            if (targetChaseCamera != null) targetChaseCamera.enabled = false;
-            cockpitCamera.enabled = true;
-            hudControl.enabledCrosshairs();
-            hudControl.enableRadar();
-            hudControl.showEventLog();
-            hudControl.enableBottomHud();
-            hudControl.enableToggle();
+            if (hyperChargeTimeout < 0.0f)
+            {
+                thrusters.startHyper(transform.forward * 1000.0f);
+                hyperCamera.transform.position = frozenPosition;
+            }
+            else
+            {
+                hyperChargeTimeout -= Time.deltaTime;
+                hyperCamera.transform.localPosition += new Vector3(0.0f, 0.02f, 0.0f);
+                frozenPosition = hyperCamera.transform.position;
+            }
         }
-        if (Input.GetKeyDown(k_chaseCamera))
+        else
         {
-            chaseCamera.enabled = true;
-            if (targetChaseCamera != null) targetChaseCamera.enabled = false;
-            cockpitCamera.enabled = false;
-            hudControl.enabledCrosshairs();
-            hudControl.disableRadar();
-            hudControl.hideEventLog();
-            hudControl.disableBottomHud();
-            hudControl.disableToggle();
-        }
-        if (Input.GetKeyDown(k_targetChase))
-        {
-            if (targetChaseCamera != null)
+            if (Input.GetKeyDown(k_cockpitCamera))
             {
                 chaseCamera.enabled = false;
-                targetChaseCamera.enabled = true;
+                if (targetChaseCamera != null) targetChaseCamera.enabled = false;
+                cockpitCamera.enabled = true;
+                hudControl.enabledCrosshairs();
+                hudControl.enableRadar();
+                hudControl.showEventLog();
+                hudControl.enableBottomHud();
+                hudControl.enableToggle();
+            }
+            if (Input.GetKeyDown(k_chaseCamera))
+            {
+                chaseCamera.enabled = true;
+                if (targetChaseCamera != null) targetChaseCamera.enabled = false;
                 cockpitCamera.enabled = false;
-                hudControl.disableCrosshairs();
-                hudControl.hideEventLog();
+                hudControl.enabledCrosshairs();
                 hudControl.disableRadar();
+                hudControl.hideEventLog();
                 hudControl.disableBottomHud();
                 hudControl.disableToggle();
             }
-        }
-        if (throttleControlEnabled)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(k_targetChase))
             {
-                __target = HUD.GetComponent<HUDControl>().getTarget();
-                if (__target != null)
+                if (targetChaseCamera != null)
                 {
-                    thrusters.setSpeed(__target.GetComponent<Rigidbody>().velocity.magnitude);
-                    hudControl.hudMessage("Matching speed with target");
+                    chaseCamera.enabled = false;
+                    targetChaseCamera.enabled = true;
+                    cockpitCamera.enabled = false;
+                    hudControl.disableCrosshairs();
+                    hudControl.hideEventLog();
+                    hudControl.disableRadar();
+                    hudControl.disableBottomHud();
+                    hudControl.disableToggle();
                 }
             }
-            if (Input.GetKeyDown(k_fullThrottle))
+            if (throttleControlEnabled)
             {
-                thrusters.setFullThrottle();
-                hudControl.hudMessage("Throttle set to FULL");
-            }
-            if (Input.GetKeyDown(k_noThrottle))
-            {
-                thrusters.setNonThrottle();
-                hudControl.hudMessage("Throttle set to NONE");
-            }
-            if (Input.GetKeyDown(k_oneThirdThrottle))
-            {
-                thrusters.setOneThirdThrottle();
-                hudControl.hudMessage("Throttle set to 1/3");
-            }
-            if (Input.GetKeyDown(k_twoThirdsThrottle))
-            {
-                thrusters.setTwoThirdsThrottle();
-                hudControl.hudMessage("Throttle set to 2/3");
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    __target = HUD.GetComponent<HUDControl>().getTarget();
+                    if (__target != null)
+                    {
+                        thrusters.setSpeed(__target.GetComponent<Rigidbody>().velocity.magnitude);
+                        hudControl.hudMessage("Matching speed with target");
+                    }
+                }
+                if (Input.GetKeyDown(k_fullThrottle))
+                {
+                    thrusters.setFullThrottle();
+                    hudControl.hudMessage("Throttle set to FULL");
+                }
+                if (Input.GetKeyDown(k_noThrottle))
+                {
+                    thrusters.setNonThrottle();
+                    hudControl.hudMessage("Throttle set to NONE");
+                }
+                if (Input.GetKeyDown(k_oneThirdThrottle))
+                {
+                    thrusters.setOneThirdThrottle();
+                    hudControl.hudMessage("Throttle set to 1/3");
+                }
+                if (Input.GetKeyDown(k_twoThirdsThrottle))
+                {
+                    thrusters.setTwoThirdsThrottle();
+                    hudControl.hudMessage("Throttle set to 2/3");
+                }
             }
         }
+    }
+
+    public void hyperOut()
+    {
+        chaseCamera.enabled = false;
+        if (targetChaseCamera != null)
+        {
+            targetChaseCamera.enabled = false;
+        }
+        cockpitCamera.enabled = false;
+        hyperCamera.enabled = true;
+        
+        hudControl.disableCrosshairs();
+        hudControl.hideEventLog();
+        hudControl.disableRadar();
+        hudControl.disableBottomHud();
+        hudControl.disableToggle();
+
+        if (hyperSpaceSound != null)
+        {
+            hyperSpaceSound.Play();
+        }
+        hyperChargeTimeout = 2.0f;
+        hypering = true;
+        GetComponent<directional_control>().setHypering(true);
+        GameObject.Find("FadeManager").GetComponent<FadeManager>().fade(3.0f, true, 1.25f);
     }
 }
