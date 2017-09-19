@@ -220,6 +220,7 @@ MonoBehaviour:
   seconds: 
   elapsedTime: 0
   destroyCountTime: []
+  canFinish: 0
 --- !u!4 &118087233
 Transform:
   m_ObjectHideFlags: 0

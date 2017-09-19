@@ -37,6 +37,7 @@ public class Driver : MonoBehaviour {
     private bool _markTime;
     private float endTime;
 
+    [SerializeField]
     private bool canFinish;
 	// Use this for initialization
 	void Start () {
@@ -55,6 +56,7 @@ public class Driver : MonoBehaviour {
             backgroundMusic.Play();
         }
         canFinish = false;
+        _markTime = false;
     }
 	
 	// Update is called once per frame
@@ -252,14 +254,14 @@ public class Driver : MonoBehaviour {
             if (elapsedTime == (endTime + 16.0f))
             {
                 msg = "Press Q to quit";
-            }
-            if (msg != null)
-            {
-                displayMessage(msg, displayTime);
-                msg = null;
-            }
+            }         
         }
-	}
+        if (msg != null)
+        {
+            displayMessage(msg, displayTime);
+            msg = null;
+        }
+    }
 
     private void Update()
     {
