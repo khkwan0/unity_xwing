@@ -239,22 +239,25 @@ public class Driver : MonoBehaviour {
                 canFinish = true;
             }
         }
-        if (elapsedTime == (endTime + 6.0f))
+        if (canFinish)
         {
-            msg = "Thanks for playing";
-        }
-        if (elapsedTime == (endTime + 11.0f))
-        {
-            msg = "Programmer: Ken";
-        }
-        if (elapsedTime == (endTime + 16.0f))
-        {
-            msg = "Press Q to quit";
-        }
-        if (msg != null)
-        {
-            displayMessage(msg, displayTime);
-            msg = null;
+            if (elapsedTime == (endTime + 6.0f))
+            {
+                msg = "Thanks for playing";
+            }
+            if (elapsedTime == (endTime + 11.0f))
+            {
+                msg = "Programmer: Ken";
+            }
+            if (elapsedTime == (endTime + 16.0f))
+            {
+                msg = "Press Q to quit";
+            }
+            if (msg != null)
+            {
+                displayMessage(msg, displayTime);
+                msg = null;
+            }
         }
 	}
 
