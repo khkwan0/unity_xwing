@@ -43,6 +43,11 @@ public class Radar : MonoBehaviour {
     private GameObject _targettedBlip;
 
     public bool _enabled;
+    private GameObject _target;
+    private bool targetted;
+    public Camera targetCamera;
+
+    private HUDController2 hud;
 
 	void Start () {
 
@@ -56,6 +61,8 @@ public class Radar : MonoBehaviour {
         reticle.GetComponent<Image>().enabled = false;
         rearReticle.GetComponent<Image>().enabled = false;
         _enabled = true;
+        hud = gameObject.GetComponent<HUDController2>();
+        _target = null;
     }
 
     private void drawBlip(GameObject _targetRadar, Color _color, Vector3 _loc, bool _isFront, bool targetted, GameObject _target)
@@ -226,40 +233,112 @@ public class Radar : MonoBehaviour {
 	void Update () {
         clearRadar(frontRadarPanel);
         clearRadar(rearRadarPanel);
+        targetted = false;  
         if (_enabled)
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                _target = this.getClosestEnemy();
+            }
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                _target = this.getNextTarget();
+            }
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                _target = this.getPrevTarget();
+            }
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                _target = null;
+            }
+
+            if (_target != null)
+            {
+                hud.setTarget(_target);
+            } else
+            {
+                hud.deTarget();
+            }
+
+            if (_target != null)
+            {
+                GameObject _targetted = _target;
+                float _dist;
+                float _scaleFactor;
+                Vector3 _int;
+                Vector3 _forward;
+                float _dot;
+                GameObject _ship;
+
+                _ship = hud.getCurrentShip();
+
+                // place the target camera
+                targetCamera.enabled = true;
+                targetCamera.transform.rotation = Quaternion.LookRotation(_targetted.transform.position - _ship.transform.position);
+                _dist = Vector3.Distance(_targetted.transform.position, _ship.transform.position);
+                _scaleFactor = 10.0f;
+                targetCamera.transform.position = _ship.transform.position + (targetCamera.transform.forward * _dist) - (targetCamera.transform.forward * _scaleFactor);
+
+                //place the chase camera                
+                //GameObject.Find("TargetChaseCamera").transform.SetParent(_targetted.transform);
+                //_targetted.transform.Find("TargetChaseCamera").transform.localPosition = new Vector3(0.0f, 5.0f, -50.0f);
+
+                // determine lead/intercept point
+                _int = FindInterceptVector(_ship.transform.position, 320.0f, _targetted.transform.position, _targetted.GetComponent<Rigidbody>().velocity);
+                _forward = _ship.transform.forward;
+                _dot = Vector3.Dot(_int.normalized, _forward);
+                if (_dot > 0.9998f)
+                {
+                    hud.setTargetCrosshairs();
+                }
+                else
+                {
+                    hud.setNormalCrosshairs();
+                }
+            }
+            else
+            {
+                hud.setNormalCrosshairs();
+            }
+
+
             foreach (GameObject foe in foes)
             {
-
                 if (foe != null)
                 {
                     loc = referenceCamera.WorldToScreenPoint(foe.transform.position);
                     screenLoc = loc;
                     loc.Scale(_v_scale);
+                    if (foe == _target)
+                    {
+                        targetted = true;
+                    }
                     if (loc.z > 0.0f)
                     {
-                        drawBlip(frontRadarPanel, c_foe, loc, true, foe.GetComponent<ShipMeta>().isTargetted(), foe);
+                        drawBlip(frontRadarPanel, c_foe, loc, true, targetted, foe);
                     }
                     else
                     {
-                        drawBlip(rearRadarPanel, c_foe, loc, false, foe.GetComponent<ShipMeta>().isTargetted(), foe);
+                        drawBlip(rearRadarPanel, c_foe, loc, false, targetted, foe);
                     }
 
                 }
             }
             foreach (GameObject friend in friends)
             {
-                if (friend != null)
+                if (friend != null && !friend.GetComponent<ShipControl>().isPlayerContolled())
                 {
                     loc = referenceCamera.WorldToScreenPoint(friend.transform.position);
                     loc.Scale(_v_scale);
+                    if (friend == _target) targetted = true;
                     if (loc.z > 0.0f)
                     {
-                        drawBlip(frontRadarPanel, c_friend, loc, true, friend.GetComponent<ShipMeta>().isTargetted(), friend);
+                        drawBlip(frontRadarPanel, c_friend, loc, true, targetted, friend);
                     }
                     else
                     {
-                        drawBlip(rearRadarPanel, c_friend, loc, false, friend.GetComponent<ShipMeta>().isTargetted(), friend);
+                        drawBlip(rearRadarPanel, c_friend, loc, false, targetted, friend);
                     }
                 }
             }
@@ -328,11 +407,20 @@ public class Radar : MonoBehaviour {
         GameObject rv = null;
 
         n_all = n_all.Next;
+
         if (n_all == null)
         {
             n_all = all.First;
         }
-        rv = n_all.Value;
+        if (n_all.Value.GetComponent<ShipControl>().isPlayerContolled()) n_all = n_all.Next;
+        if (n_all == null)
+        {
+            n_all = all.First;
+        }
+        if (!n_all.Value.GetComponent<ShipControl>().isPlayerContolled())
+        {
+            rv = n_all.Value;
+        }
         return rv;
     }
 
@@ -345,7 +433,74 @@ public class Radar : MonoBehaviour {
         {
             n_all = all.Last;
         }
-        rv = n_all.Value;
+        if (n_all.Value.GetComponent<ShipControl>().isPlayerContolled()) n_all = n_all.Previous;
+        if (n_all == null)
+        {
+            n_all = all.Last;
+        }
+        if (!n_all.Value.GetComponent<ShipControl>().isPlayerContolled())
+        {
+            rv = n_all.Value;
+        }
         return rv;
+    }
+
+    private Vector3 FindInterceptVector(Vector3 shotOrigin, float shotSpeed, Vector3 targetOrigin, Vector3 targetVel)
+    {
+
+        Vector3 dirToTarget = Vector3.Normalize(targetOrigin - shotOrigin);
+
+        // Decompose the target's velocity into the part parallel to the
+        // direction to the cannon and the part tangential to it.
+        // The part towards the cannon is found by projecting the target's
+        // velocity on dirToTarget using a dot product.
+        Vector3 targetVelOrth =
+        Vector3.Dot(targetVel, dirToTarget) * dirToTarget;
+
+        // The tangential part is then found by subtracting the
+        // result from the target velocity.
+        Vector3 targetVelTang = targetVel - targetVelOrth;
+
+        /*
+        * targetVelOrth
+        * |
+        * |
+        *
+        * ^...7  <-targetVel
+        * |  /.
+        * | / .
+        * |/ .
+        * t--->  <-targetVelTang
+        *
+        *
+        * s--->  <-shotVelTang
+        *
+        */
+
+        // The tangential component of the velocities should be the same
+        // (or there is no chance to hit)
+        // THIS IS THE MAIN INSIGHT!
+        Vector3 shotVelTang = targetVelTang;
+
+        // Now all we have to find is the orthogonal velocity of the shot
+
+        float shotVelSpeed = shotVelTang.magnitude;
+        if (shotVelSpeed > shotSpeed)
+        {
+            // Shot is too slow to intercept target, it will never catch up.
+            // Do our best by aiming in the direction of the targets velocity.
+            return targetVel.normalized * shotSpeed;
+        }
+        else
+        {
+            // We know the shot speed, and the tangential velocity.
+            // Using pythagoras we can find the orthogonal velocity.
+            float shotSpeedOrth =
+            Mathf.Sqrt(shotSpeed * shotSpeed - shotVelSpeed * shotVelSpeed);
+            Vector3 shotVelOrth = dirToTarget * shotSpeedOrth;
+
+            // Finally, add the tangential and orthogonal velocities.
+            return shotVelOrth + shotVelTang;
+        }
     }
 }

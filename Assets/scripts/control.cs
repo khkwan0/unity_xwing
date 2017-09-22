@@ -24,7 +24,6 @@ public class control : MonoBehaviour {
 
     public AudioSource hyperSpaceSound;
 
-    private GameObject HUD;
     private GameObject _crossHairs;
     private HUDControl hudControl;
 
@@ -37,6 +36,8 @@ public class control : MonoBehaviour {
     private Thrusters thrusters;
     private bool throttleControlEnabled;
     private Vector3 frozenPosition;
+
+    public GameObject HUD;
 
     void Awake()
     {
@@ -53,7 +54,6 @@ public class control : MonoBehaviour {
     }
 
     void Start () {
-        HUD = GameObject.Find("HUD");
         hudControl = HUD.GetComponent<HUDControl>();
         thrusters = GetComponent<Thrusters>();
         throttleControlEnabled = true;
@@ -67,6 +67,18 @@ public class control : MonoBehaviour {
     public void enableThrottleControl()
     {
         throttleControlEnabled = true;
+    }
+
+    public void setCockpitView()
+    {
+        chaseCamera.enabled = false;
+        if (targetChaseCamera != null) targetChaseCamera.enabled = false;
+        cockpitCamera.enabled = true;
+        hudControl.enabledCrosshairs();
+        hudControl.enableRadar();
+        hudControl.showEventLog();
+        hudControl.enableBottomHud();
+        hudControl.enableToggle();
     }
 
     // Update is called once per frame
@@ -90,14 +102,7 @@ public class control : MonoBehaviour {
         {
             if (Input.GetKeyDown(k_cockpitCamera))
             {
-                chaseCamera.enabled = false;
-                if (targetChaseCamera != null) targetChaseCamera.enabled = false;
-                cockpitCamera.enabled = true;
-                hudControl.enabledCrosshairs();
-                hudControl.enableRadar();
-                hudControl.showEventLog();
-                hudControl.enableBottomHud();
-                hudControl.enableToggle();
+                this.setCockpitView();
             }
             if (Input.GetKeyDown(k_chaseCamera))
             {

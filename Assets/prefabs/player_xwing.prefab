@@ -4137,6 +4137,7 @@ MonoBehaviour:
   hyperCamera: {fileID: 0}
   hyperSpaceSound: {fileID: 0}
   __target: {fileID: 0}
+  HUD: {fileID: 1123807032676096}
 --- !u!114 &114115361043362608
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4825,6 +4826,9 @@ MonoBehaviour:
   maxTurnSpeed: 100
   groupName: 
   callSign: 
+  hyperInSound: {fileID: 0}
+  engineSound: {fileID: 0}
+  flybySound: {fileID: 0}
   faction: ra
   missionTarget: {fileID: 0}
   _mission: 0

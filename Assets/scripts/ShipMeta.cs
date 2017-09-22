@@ -13,6 +13,9 @@ public class ShipMeta : MonoBehaviour {
     public string groupName;
     public string callSign;
 
+    public AudioSource hyperInSound;
+    public AudioSource engineSound;
+    public AudioSource flybySound;
 
     public string faction; // imp, ra, other...
     
@@ -35,7 +38,10 @@ public class ShipMeta : MonoBehaviour {
         _isTargetted = false;
         if (transform.gameObject.name != "player_xwing")
         {
-            GameObject.Find("HUD").GetComponent<Radar>().register(gameObject);
+            if (GameObject.Find("HUD").GetComponent<Radar>() != null)
+            {
+                GameObject.Find("HUD").GetComponent<Radar>().register(gameObject);
+            }          
         }
 	}
 	

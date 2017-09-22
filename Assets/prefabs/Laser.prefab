@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 54854249747938968}
   - component: {fileID: 136291829976549578}
   - component: {fileID: 114240374589995976}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Laser
   m_TagString: enemy_laser
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4212637985475090}
   - component: {fileID: 120842814086825798}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,6 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095edf667f622ac4facfab14d5f1c748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
+  shooter: {fileID: 0}
 --- !u!120 &120842814086825798
 LineRenderer:
   m_ObjectHideFlags: 1

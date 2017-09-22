@@ -30,7 +30,7 @@ public class StarField : MonoBehaviour {
         points = new ParticleSystem.Particle[starsMax];
         for (int i=0; i<starsMax; i++)
         {
-            points[i].position = Random.insideUnitSphere * starDistance + transform.position;
+            points[i].position = Random.insideUnitSphere * starDistance + transform.parent.position;
             points[i].startColor = new Color(starColor.r, starColor.g, starColor.b, starColor.a);
             points[i].startSize = starSize;
         }        
@@ -44,13 +44,13 @@ public class StarField : MonoBehaviour {
         }
         for (int i=0; i<starsMax; i++)
         {
-            if ((points[i].position - transform.position).sqrMagnitude > starDistanceSqr)
+            if ((points[i].position - transform.parent.position).sqrMagnitude > starDistanceSqr)
             {                    
-                points[i].position = Random.insideUnitSphere.normalized * starDistance + transform.position;
+                points[i].position = Random.insideUnitSphere.normalized * starDistance + transform.parent.position;
             }
             if ((points[i].position - transform.position).sqrMagnitude <= starClipDistanceSqr)
             {
-                float percentage = (points[i].position - transform.position).sqrMagnitude / starClipDistanceSqr;
+                float percentage = (points[i].position - transform.parent.position).sqrMagnitude / starClipDistanceSqr;
                 points[i].startColor = new Color(1, 1, 1, percentage);
                 points[i].startSize = percentage * starSize;
             }
